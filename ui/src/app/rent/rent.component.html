@@ -1,0 +1,51 @@
+<h2 class="main">Bike rental</h2>
+<p class="main" *ngIf="!bikes">Loading...</p>
+<div class="main" *ngIf="bikes">
+  <div>
+   <h4> Create new rent </h4>
+    <form>
+      <div class="d-inline">
+        <form [formGroup]="rentForm">
+          <table class="table-borderless">
+            <tr><td>Name</td><td>Type</td><td>Price</td><td></td></tr>
+            <tr><td><input type="text" formControlName="name" class="form-control"></td>
+            <td>
+              <select formControlName="type"  class="custom-select">
+                <option disabled>Chose the type</option>
+                <option value="Road">Road bicycle</option>
+                <option value="Mountain">Mountain bicycle</option>
+                <option value="Custom">Custom bicycle</option>
+              </select>
+              </td>
+              <td><input type="number" formControlName="price" class="form-control"></td><td><button (click)="SubmitRent()" [disabled]="rentForm.invalid" class="btn btn-success" type="button">Submit rent</button></td></tr>
+
+          </table>
+        </form>
+      </div>
+    </form>
+  </div>
+  <div>
+    <h4>Your rent</h4>
+    <table class="table table-borderless">
+      <thead><tr><td>Name</td><td>Type</td><td>Price</td><td></td></tr></thead>
+      <tbody>
+    <ng-container><tr *ngFor="let bike of this.bikes">
+        <ng-container *ngIf="this.bike.rented"><td>{{bike.name}}</td><td>{{bike.type}}</td><td>{{bike.price}}</td><td><button class="btn btn-danger" (click)="ChangeRentBike(this.bike.id,this.bike)">Cancel rent</button></td></ng-container>
+    </tr></ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div>
+
+    <h4>Available bicycles</h4>
+    <table class="table table-borderless">
+      <thead><tr><td>Name</td><td>Type</td><td>Price</td><td></td></tr></thead>
+      <tbody>
+      <ng-container> <tr *ngFor="let bike of this.bikes">
+        <ng-container *ngIf="!this.bike.rented"><td>{{bike.name}}</td><td>{{bike.type}}</td><td>{{bike.price}}</td><td><button class="btn btn-info" (click)="ChangeRentBike(this.bike.id,this.bike)">Rent this bike</button><button class="btn btn-danger" (click)="DeleteBike(bike.id)">Delete this bike</button></td></ng-container>
+      </tr></ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
